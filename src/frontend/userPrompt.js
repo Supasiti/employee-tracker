@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const displayAll = require('./displayAll');
 const askForNewDepartment = require('./askForNewDepartment');
-
+const askForNewRole = require('./askForNewRole');
 
 const questions = [
   {
@@ -31,7 +31,7 @@ const handleAnswer = (answer) => {
   if (purpose === 'View All Departments') return displayAll('departments').then(() => start());
 
   if (purpose === 'Add Department') return askForNewDepartment.start().then(() => start())
-
+  if (purpose === 'Add Role')       return askForNewRole.start().then(() => start())
   if (purpose === 'Quit') return process.exit();
 };
 

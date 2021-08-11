@@ -21,7 +21,8 @@ const findAllTitles = () => {
 
 
 // add a role name to the db
-const add = ({title, salary, departmentId}) => {
+const add = (role) => {
+  const {title, salary, departmentId } = role;
   return sql.promise()
     .query(`
       INSERT INTO role (title, salary, department_id)
