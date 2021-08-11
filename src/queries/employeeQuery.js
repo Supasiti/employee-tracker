@@ -1,4 +1,6 @@
 const sql = require('../configs/mysqlConnection');
+const { filterObjectByKeys, camelToUnderscore } = require('../services/utils')
+
 
 // find all return all employees in the db
 // with their role titles, salaries, departments and managers
@@ -52,13 +54,22 @@ const add = (employee) => {
     .catch(console.error)
 };
 
+// create a query string for sql update
+const createUpdateString = (obj) => {
+  const keys = [...Object.keys(obj)];
+  return keys.map((key) => `${camelToUnderscore(key)} = ?`).join(', ');
+} 
+
 // update employee role
-const updateRole = (id, newRoleId) => {
+const update = (id, newData) => {
+  const allowed = ['firstName', 'lastName', 'roleId', 'managerId']
+  const toUpdate = filterObjectByKeys(newData, allowed);
+  
   return sql.promise()
     .query(`
       UPDATE employee 
-        SET role_id = ?
-        WHERE id = ?`, [newRoleId, id])
+        SET ${createUpdateString(toUpdate)}
+        WHERE id = ?`, [...Object.values(toUpdate), id])
     .catch(console.error)
 };
 
@@ -67,5 +78,5 @@ module.exports = {
   findAll,
   findAllNames,
   add,
-  updateRole
+  update
 }

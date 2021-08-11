@@ -12,7 +12,10 @@ const updateEntity = require('./src/services/updateEntity')
 
 findAll('employees')
   .then(console.table)
-  .then(() => updateEntity('employee', 'role', 12, 6))
+  .then(() => updateEntity('employee', 12, {
+    roleId: 6,
+    managerId: 3
+  } ))
   .then(() => findAll('employees'))
   .then(console.table)
   .catch(console.error);
