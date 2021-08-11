@@ -27,8 +27,10 @@ const questions = [
 const handleAnswer = (answer) => {
   const { purpose } = answer;
 
-  if (purpose === 'View All Employees') return displayAll('employees').then(() => start());
-  
+  if (purpose === 'View All Employees')   return displayAll('employees').then(() => start());
+  if (purpose === 'View All Roles')       return displayAll('roles').then(() => start());
+  if (purpose === 'View All Departments') return displayAll('departments').then(() => start());
+
   if (purpose === 'Quit') return process.exit();
 }
 
