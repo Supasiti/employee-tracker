@@ -1,6 +1,7 @@
 // main access to CLI 
 const inquirer = require('inquirer');
 const displayAll = require('./displayAll');
+const askForNewDepartment = require('./askForNewDepartment');
 
 
 const questions = [
@@ -21,9 +22,7 @@ const questions = [
   }
 ]
 
-
-
-
+// handle when user answer
 const handleAnswer = (answer) => {
   const { purpose } = answer;
 
@@ -31,16 +30,17 @@ const handleAnswer = (answer) => {
   if (purpose === 'View All Roles')       return displayAll('roles').then(() => start());
   if (purpose === 'View All Departments') return displayAll('departments').then(() => start());
 
+  if (purpose === 'Add Department') return askForNewDepartment.start().then(() => start())
+
   if (purpose === 'Quit') return process.exit();
-}
+};
 
-
-
+//  to start the CLI
 const start = () =>{
   return inquirer
     .prompt(questions)
     .then(handleAnswer)
-}
+};
 
 module.exports = {
   start

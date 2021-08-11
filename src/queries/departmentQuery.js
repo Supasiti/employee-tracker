@@ -8,7 +8,8 @@ const findAll = () => {
 }
 
 // add a department name to the db
-const add = (name) => {
+const add = (department) => {
+  const { name } = department;
   return sql.promise()
     .query(`
       INSERT INTO department (name)
