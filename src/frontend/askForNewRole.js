@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 const add = require('../services/addEntity');
 const findAllNames = require('../services/findAllNames'); 
-const { filterObjectByKeys } = require('../services/utils');
 
 let departments = [];
 

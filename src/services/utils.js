@@ -12,13 +12,18 @@ const filterObjectByKeys = (obj, keys) =>{
 }
 
 // convert camel case to underscore
-function camelToUnderscore(key) {
+const camelToUnderscore = (key) => {
   return key.replace( /([A-Z])/g, "_$1").toLowerCase();
 }
 
+// combine first and last names
+const getFullName = (firstName, lastName) => {
+  return `${firstName} ${lastName}`;
+}
 
 module.exports = {
   parseTextRow,
   filterObjectByKeys,
+  getFullName,
   camelToUnderscore
 }

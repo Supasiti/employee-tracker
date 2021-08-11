@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 const displayAll = require('./displayAll');
 const askForNewDepartment = require('./askForNewDepartment');
 const askForNewRole = require('./askForNewRole');
+const askForNewEmployee = require('./askForNewEmployee');
 
 const questions = [
   {
@@ -32,6 +33,8 @@ const handleAnswer = (answer) => {
 
   if (purpose === 'Add Department') return askForNewDepartment.start().then(() => start())
   if (purpose === 'Add Role')       return askForNewRole.start().then(() => start())
+  if (purpose === 'Add Employee')   return askForNewEmployee.start().then(() => start())
+
   if (purpose === 'Quit') return process.exit();
 };
 

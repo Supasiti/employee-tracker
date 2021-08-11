@@ -32,4 +32,16 @@ describe('services/util', () =>{
       expect(result).toEqual(expected);
     });
   });
+
+  describe('getFullName', () => {
+    it('should conbine first and last names into fullname', ()=>{
+      const inputA = "Steve";
+      const inputB = "Job";
+      const expected = 'Steve Job';
+
+      const result = util.getFullName(inputA, inputB);
+
+      expect(result).toEqual(expected);
+    });
+  });
 })
