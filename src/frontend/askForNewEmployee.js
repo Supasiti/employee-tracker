@@ -21,6 +21,7 @@ const getRoleIdByName = (title) => {
 }
 
 const getManagerIdByName = (name) => { 
+  if (name === 'None') return null;
   const { id } = currentEmployees.find((em) => em.name === name);
   return id;
 }
@@ -46,7 +47,7 @@ const createQuestions = () => [
     type: 'list',
     name: 'managerName',
     message: 'What is the employee\'s manager?',
-    choices: currentEmployees.map((em) => em.name)
+    choices: ['None', ...currentEmployees.map((em) => em.name)]
   },
 ]
 
@@ -70,8 +71,6 @@ const start = () => {
     .then(([roles, employees]) => {
       saveRoles(roles); 
       saveEmployees(employees);
-      console.log(currentEmployees);
-      console.log(createQuestions());
     })
     .then(() => inquirer.prompt(createQuestions())) 
     .then(handleAnswer)
