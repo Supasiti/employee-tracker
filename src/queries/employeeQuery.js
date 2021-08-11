@@ -15,7 +15,8 @@ const add = ({firstName, lastName, roleId, managerId}) => {
       VALUES (?, ?, ?, ?)`, [firstName, lastName, roleId, managerId])
     .catch(console.error)
 }
-  
+
+// update employee role
 const updateRole = (id, newRoleId) => {
   return sql.promise()
     .query(`

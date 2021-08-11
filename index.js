@@ -1,23 +1,11 @@
 require('dotenv').config();
 require('./src/configs/mysqlConnection');
-const emQuery = require('./src/queries/employeeQuery');
+const cTable = require('console.table');
 
 
-emQuery.findAll()
-  .then( ([rows]) => {
-    console.log(rows)
-  });
+const findAll = require('./src/services/findAll');
 
 
-emQuery.add({
-  firstName: "Bob",
-  lastName: "YourUncle",
-  roleId: 6,
-  managerId: 3
-})
-.then( () => emQuery.findAll())
-.then(([rows]) => {console.log(rows)})
-.then( () => emQuery.updateRole(13, 5))
-.then(() => emQuery.findAll())
-.then(([rows]) => {console.log(rows)});
-
+findAll('roles').then(console.log);
+findAll('departments').then(console.log);
+findAll('employees').then(console.log);
