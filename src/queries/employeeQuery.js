@@ -6,6 +6,7 @@ const findAll = () => {
   return sql.promise()
     .query(`
       SELECT 
+        a.id,
         a.first_name, 
         a.last_name, 
         r.title,
@@ -15,18 +16,35 @@ const findAll = () => {
       FROM 
         (
           SELECT 
-            a.first_name,
-            a.last_name,
+            a.id,
+            a.first_name, 
+            a.last_name, 
             a.role_id,
             CONCAT(b.first_name, ' ', b.last_name) AS manager
-          FROM employee a, employee b
-          WHERE a.manager_id = b.id
+          FROM employee a
+            LEFT JOIN employee b ON a.manager_id = b.id
         ) AS a
       LEFT JOIN role r ON a.role_id = r.id
       LEFT JOIN department d ON r.department_id=d.id;
     `)
     .catch(console.error)
 }
+
+// const findAll = () => {
+//   return sql.promise()
+//     .query(`
+//       (
+//         SELECT 
+//         a.id,
+//         a.first_name, 
+//         a.last_name, 
+//         b.first_name as manager
+//       FROM employee a
+//         LEFT JOIN employee b ON a.manager_id = b.id
+//         LEFT JOIN role r ON a.role_id = r.id;
+//     `)
+//     .catch(console.error)
+// }
 
 
 // add an employee  to the db
