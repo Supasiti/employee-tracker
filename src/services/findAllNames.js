@@ -14,7 +14,7 @@ const findAllNames = (entity) => {
     return queries[entity]()
       .then( ([results]) =>  results.map((textRow) => parseTextRow(textRow)));
   }
-  console.error(`Entity ${entity} does not exist in this database`);
+  throw new Error(`Entity (${entity}) does not exist in this database`);
 }
 
 module.exports = findAllNames;
