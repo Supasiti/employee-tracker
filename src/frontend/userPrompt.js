@@ -1,9 +1,10 @@
 // main access to CLI 
 const inquirer = require('inquirer');
 const displayAll = require('./displayAll');
-const askForNewDepartment = require('./askForNewDepartment');
-const askForNewRole = require('./askForNewRole');
-const askForNewEmployee = require('./askForNewEmployee');
+const askToAddDepartment = require('./askToAddDepartment');
+const askToAddRole = require('./askToAddRole');
+const askToAddEmployee = require('./askToAddEmployee');
+const askToUpdateEmployee = require('./askToUpdateEmployee');
 
 const questions = [
   {
@@ -31,10 +32,12 @@ const handleAnswer = (answer) => {
   if (purpose === 'View All Roles')       return displayAll('roles').then(() => start());
   if (purpose === 'View All Departments') return displayAll('departments').then(() => start());
 
-  if (purpose === 'Add Department') return askForNewDepartment.start().then(() => start())
-  if (purpose === 'Add Role')       return askForNewRole.start().then(() => start())
-  if (purpose === 'Add Employee')   return askForNewEmployee.start().then(() => start())
+  if (purpose === 'Add Department') return askToAddDepartment.start().then(() => start())
+  if (purpose === 'Add Role')       return askToAddRole.start().then(() => start())
+  if (purpose === 'Add Employee')   return askToAddEmployee.start().then(() => start())
 
+  if (purpose === 'Update Employee\'s Role')  return askToUpdateEmployee.start().then(() => start())
+  
   if (purpose === 'Quit') return process.exit();
 };
 

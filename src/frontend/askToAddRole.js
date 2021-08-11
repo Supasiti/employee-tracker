@@ -2,19 +2,12 @@ const inquirer = require('inquirer');
 const add = require('../services/addEntity');
 const findAllNames = require('../services/findAllNames'); 
 
-let departments = [];
-
-const saveDepartments = (newDep) => {
-  departments = [...newDep];
-  return departments;
-}
-
-const getDepartmentIdByName = (name) => {
-  const { id } = departments.find((dep) => dep.name === name);
+const getDepartmentIdByName = (name, data) => {
+  const { id } = data.currentDepartments.find((dep) => dep.name === name);
   return id;
 }
 
-const createQuestions = (departments) => [
+const createQuestions = (data) => [
   {
     type: 'input',
     name: 'title',
@@ -29,13 +22,13 @@ const createQuestions = (departments) => [
     type: 'list',
     name: 'departmentName',
     message: 'Which department does the role belong to?',
-    choices: departments.map((dep) => dep.name)
+    choices: data.currentDepartments.map((dep) => dep.name)
   },
 ]
 
 // handle answer
-const handleAnswer = (answer) => {
-  const departmentId = getDepartmentIdByName(answer.departmentName);
+const handleAnswer = (answer, data) => {
+  const departmentId = getDepartmentIdByName(answer.departmentName, data);
   const newRole = {...answer, departmentId};
 
   return add('role', newRole)
@@ -47,12 +40,14 @@ const handleAnswer = (answer) => {
 
 // to start mini series of questions
 const start = () => {
+  const data = {};
+
   return findAllNames('departments')
-    .then(saveDepartments)
-    .then( (dep) => {
-      return inquirer.prompt(createQuestions(dep))
-    }) 
-    .then(handleAnswer)
+    .then((dep) => {
+      data.currentDepartments = dep;
+    })
+    .then(() => inquirer.prompt(createQuestions(data))) 
+    .then((answer) => handleAnswer(answer, data))
     .catch(console.error)
 };
 
