@@ -44,6 +44,8 @@ const findAllNames = () => {
     .catch(console.error)
 };
 
+
+
 // add an employee  to the db
 const add = (employee) => {
   const { firstName, lastName, roleId, managerId } = employee;

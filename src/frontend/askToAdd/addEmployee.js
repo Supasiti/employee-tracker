@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
-const add = require('../services/addEntity');
-const findAllNames = require('../services/findAllNames'); 
+const add = require('../../services/addEntity');
+const findAllNames = require('../../services/findAllNames'); 
 
 const getRoleIdByName = (title, data) => {
   const { id } = data.currentRoles.find((role) => role.title === title);

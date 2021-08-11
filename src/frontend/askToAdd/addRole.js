@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
-const add = require('../services/addEntity');
-const findAllNames = require('../services/findAllNames'); 
+const add = require('../../services/addEntity');
+const findAllNames = require('../../services/findAllNames'); 
 
 const getDepartmentIdByName = (name, data) => {
   const { id } = data.currentDepartments.find((dep) => dep.name === name);
