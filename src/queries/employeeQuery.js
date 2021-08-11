@@ -28,33 +28,29 @@ const findAll = () => {
       LEFT JOIN department d ON r.department_id=d.id;
     `)
     .catch(console.error)
-}
+};
 
-// const findAll = () => {
-//   return sql.promise()
-//     .query(`
-//       (
-//         SELECT 
-//         a.id,
-//         a.first_name, 
-//         a.last_name, 
-//         b.first_name as manager
-//       FROM employee a
-//         LEFT JOIN employee b ON a.manager_id = b.id
-//         LEFT JOIN role r ON a.role_id = r.id;
-//     `)
-//     .catch(console.error)
-// }
 
+// find all return all employees' names in the db
+const findAllNames = () => {
+  return sql.promise()
+    .query(`
+      SELECT 
+        a.id,  
+        CONCAT(a.first_name, ' ', a.last_name) AS name 
+      FROM employee a`)
+    .catch(console.error)
+};
 
 // add an employee  to the db
-const add = ({firstName, lastName, roleId, managerId}) => {
+const add = (employee) => {
+  const { firstName, lastName, roleId, managerId } = employee;
   return sql.promise()
     .query(`
       INSERT INTO employee (first_name, last_name, role_id, manager_id)
       VALUES (?, ?, ?, ?)`, [firstName, lastName, roleId, managerId])
     .catch(console.error)
-}
+};
 
 // update employee role
 const updateRole = (id, newRoleId) => {
@@ -64,10 +60,12 @@ const updateRole = (id, newRoleId) => {
         SET role_id = ?
         WHERE id = ?`, [newRoleId, id])
     .catch(console.error)
-}
+};
+
 
 module.exports = {
   findAll,
+  findAllNames,
   add,
   updateRole
 }

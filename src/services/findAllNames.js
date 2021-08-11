@@ -1,6 +1,6 @@
-const findAllRoles = require('../queries/roleQuery').findAll;
+const findAllRoles = require('../queries/roleQuery').findAllTitles;
 const findAllDeparments = require('../queries/departmentQuery').findAll;
-const findAllEmployees = require('../queries/employeeQuery').findAll;
+const findAllEmployees = require('../queries/employeeQuery').findAllNames;
 const { parseTextRow } = require('./utils');
 
 const queries = {
@@ -9,7 +9,7 @@ const queries = {
   employees: findAllEmployees
 }
 
-const findAll = (entity) => {
+const findAllNames = (entity) => {
   if (entity in queries) {
     return queries[entity]()
       .then( ([results]) =>  results.map((textRow) => parseTextRow(textRow)));
@@ -17,4 +17,4 @@ const findAll = (entity) => {
   console.error(`Entity ${entity} does not exist in this database`);
 }
 
-module.exports = findAll;
+module.exports = findAllNames;

@@ -12,6 +12,12 @@ const findAll = () => {
 }
 
 
+// find all return all role titles in the db
+const findAllTitles = () => {
+  return sql.promise()
+    .query(`SELECT role.id, role.title FROM role`)
+    .catch(console.error)
+}
 
 
 // add a role name to the db
@@ -26,5 +32,6 @@ const add = ({title, salary, departmentId}) => {
 
 module.exports = {
   findAll,
+  findAllTitles,
   add
 }
