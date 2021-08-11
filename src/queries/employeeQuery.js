@@ -16,8 +16,17 @@ const add = ({firstName, lastName, roleId, managerId}) => {
     .catch(console.error)
 }
   
+const updateRole = (id, newRoleId) => {
+  return sql.promise()
+    .query(`
+      UPDATE employee 
+        SET role_id = ?
+        WHERE id = ?`, [newRoleId, id])
+    .catch(console.error)
+}
 
 module.exports = {
   findAll,
-  add
+  add,
+  updateRole
 }
