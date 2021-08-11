@@ -1,8 +1,20 @@
 require('dotenv').config();
+require('./src/configs/mysqlConnection');
+const emQuery = require('./src/queries/employeeQuery');
 
-const connection = require('./src/configs/mysqlConnection');
 
-connection.query(
-  'SELECT * FROM `department`',
-  (err, results) =>  {console.log(results);}
-)
+emQuery.findAll()
+  .then( ([rows]) => {
+    console.log(rows)
+  });
+
+
+emQuery.add({
+  firstName: "Bob",
+  lastName: "YourUncle",
+  roleId: 6,
+  managerId: 3
+})
+.then( () => emQuery.findAll())
+.then(([rows]) => {console.log(rows)});
+
