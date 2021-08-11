@@ -1,11 +1,18 @@
 const sql = require('../configs/mysqlConnection');
 
-// find all return all roles in the db
+// find all return all roles in the db - join with info from department
 const findAll = () => {
   return sql.promise()
-    .query('SELECT * FROM `role`')
+    .query(`
+      SELECT role.id, role.title, role.salary, department.name AS department
+        FROM role
+        LEFT JOIN department ON role.department_id=department.id 
+    `)
     .catch(console.error)
 }
+
+
+
 
 // add a role name to the db
 const add = ({title, salary, departmentId}) => {
