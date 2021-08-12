@@ -11,17 +11,15 @@ const findAll = (options) => {
 }
 
 // find all return all employees' names in the db
-const findAllNames = () => {
-  return query(`
-      SELECT 
-        a.id,  
-        CONCAT(a.first_name, ' ', a.last_name) AS name 
-      FROM employee a`)
-};
+const findAllNames = () => query(`
+SELECT 
+  a.id,  
+  CONCAT(a.first_name, ' ', a.last_name) AS name 
+FROM employee a`);
+
 
 // find all return all managers'names in the db
-const findAllManagers = () => {
-  return query(`
+const findAllManagers = () => query(`
 SELECT 
   a.id,  
   CONCAT(a.first_name, ' ', a.last_name) AS name 
@@ -30,9 +28,7 @@ WHERE a.id in
   (
     SELECT b.manager_id  
     FROM employee b
-  )
-      `)
-}
+  )`);
 
 // ---------------------------------------------------------------------------------------
 // create / update
@@ -56,9 +52,9 @@ const update = (id, newData) => {
   const toUpdate = filterObjectByKeys(newData, allowed);
   
   return query(`
-      UPDATE employee 
-        SET ${createUpdateString(toUpdate)}
-        WHERE id = ?`, [...Object.values(toUpdate), id])
+UPDATE employee 
+  SET ${createUpdateString(toUpdate)}
+  WHERE id = ?`, [...Object.values(toUpdate), id])
 };
 
 
