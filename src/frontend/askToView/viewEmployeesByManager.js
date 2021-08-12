@@ -1,37 +1,50 @@
 const inquirer = require('inquirer');
 const findAll = require('../../services/findAll');
+const findAllNames = require('../../services/findAllNames');
 
 const createQuestions = (data) => {
-  const managers = data.employees.map((em) => em.manager);
-  const choices = managers.reduce((acc, cur) => {
-    if (cur && !acc.includes(cur)) return [...acc, cur];
-    return [...acc];
-  }, [])
-
   return [
     {
       type: 'list',
       name: 'managerName',
       message: 'Which manager would you to view?',
-      choices
+      choices: ['None', ...data.managers]
     }
   ];
 }
 
+// get manager id from the list
+const getManagerIdByName = (name, data) => {
+  console.log(name);
+  if (name === 'None') return 'null';
+  const { id } = data.managers.find((manager) => manager.name === name);
+  return id;
+}
+
 // handle answer
 const handleAnswer = (answer, data) => {
-  const toDisplay = data.employees.filter((employee) => employee.manager === answer.managerName);
-  console.log('');
-  console.table(toDisplay);
+  const filterValue = getManagerIdByName(answer.managerName, data);
+  console.log(filterValue);
+  const filterObj = {
+    where : {
+      managerId : filterValue
+    }
+  }
+  return findAll('employees', filterObj)
+    .then( (toDisplay) =>{
+      console.log('');
+      console.table(toDisplay);
+    })
+    .catch(console.error)
 };
 
 // to start mini series of questions
 const start = () => {
   const data = {};
 
-  return findAll('employees')
+  return findAllNames('managers')
     .then((result) => {
-      data.employees = [...result];
+      data.managers = [...result];
     })
     .then(() => inquirer.prompt(createQuestions(data))) 
     .then((answer) => handleAnswer(answer, data))

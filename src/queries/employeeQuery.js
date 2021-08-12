@@ -2,6 +2,7 @@ const sql = require('../configs/mysqlConnection');
 const { filterObjectByKeys, camelToUnderscore } = require('../services/utils')
 
 // ---------------------------------------------------------------------------------------
+//  generating query string
 
 const rawEmployeeWithManagerQueryString = `
   SELECT 
@@ -14,36 +15,25 @@ const rawEmployeeWithManagerQueryString = `
 const rawQueryString = `
   SELECT 
     a.*,
-    r.*,
+    r.title,
+    r.salary,
+    r.department_id,
     d.name AS department_name
   FROM  (${rawEmployeeWithManagerQueryString}) AS a
   LEFT JOIN role r ON a.role_id = r.id
-  LEFT JOIN department d ON r.department_id=d.id;` 
+  LEFT JOIN department d ON r.department_id=d.id` ;
 
-
-const findAllDefault = () => {
-  return sql.promise()
-    .query(rawQueryString)
-    .catch(console.error);
-}
-
-const findAllTest = (options) => {
-  if (!options) return findAllDefault();
-  const { where } = options;
-  if (!where) return findAllDefault();
-
-  const allowed = ['roleId', 'managerId', 'departmentId'];
-  const filter = filterObjectByKeys(where, allowed);
-
-  return sql.promise()
-    .query(`
-      SELECT *
-      FROM (${rawQueryString} ) as a
-      ${getFilterString(filter)}
-    `, getFilterValues(filter))
-    .catch(console.error);
-}
-
+const findAllQueryString = (from) => `
+  SELECT 
+    a.id,
+    a.first_name, 
+    a.last_name, 
+    a.title,
+    a.department_name,
+    a.salary,
+    a.manager
+  FROM  (${from}) AS a`
+  
 //  filterObj can be 
 //    { attr: 'not null'}
 //    { attr: 'null'}
@@ -67,39 +57,37 @@ const getFilterValues = (filterObj) => {
   return values.filter((value) => !nonValues.includes(value));
 };
 
+// ---------------------------------------------------------------------------------------
+//  Get all employees + filter
+
+// default return -- without any filter
+const findAllDefault = () => {
+  return sql.promise()
+    .query(findAllQueryString(rawQueryString))
+    .catch(console.error);
+}
 
 // find all return all employees in the db
 // with their role titles, salaries, departments and managers
-const findAll = () => {
+// with option to put in filter
+const findAll = (options) => {
+  if (!options) return findAllDefault();
+  
+  const { where } = options;
+  if (!where) return findAllDefault();
+
+  const allowed = ['roleId', 'managerId', 'departmentId'];
+  const filter = filterObjectByKeys(where, allowed);
 
   return sql.promise()
-    .query(`
-      SELECT 
-        a.id,
-        a.first_name, 
-        a.last_name, 
-        r.title,
-        d.name AS department,
-        r.salary,
-        a.manager
-      FROM 
-        (
-          SELECT 
-            a.id,
-            a.first_name, 
-            a.last_name, 
-            a.role_id,
-            CONCAT(b.first_name, ' ', b.last_name) AS manager
-          FROM employee a
-          LEFT JOIN employee b 
-            ON a.manager_id = b.id
-        ) AS a
-      LEFT JOIN role r ON a.role_id = r.id
-      LEFT JOIN department d ON r.department_id=d.id;
-    `)
-    .catch(console.error)
-};
-
+    .query(
+      findAllQueryString(`
+        SELECT * FROM ( ${rawQueryString} ) AS a
+        ${getFilterString(filter)}`
+      ) 
+    , getFilterValues(filter))
+    .catch(console.error);
+}
 
 // find all return all employees' names in the db
 const findAllNames = () => {
@@ -111,7 +99,6 @@ const findAllNames = () => {
       FROM employee a`)
     .catch(console.error)
 };
-
 
 // find all return all managers'names in the db
 const findAllManagers = () => {
@@ -164,11 +151,9 @@ const update = (id, newData) => {
 
 
 module.exports = {
-  // findAll,
+  findAll,
   findAllNames,
   findAllManagers,
-  findAllTest,
-  // getFilterString,
   add,
   update
 }
