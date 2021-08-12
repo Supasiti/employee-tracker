@@ -17,4 +17,5 @@ const findAll = (entity) => {
   throw new Error(`Entity (${entity}) does not exist in this database`);
 }
 
+
 module.exports = findAll;

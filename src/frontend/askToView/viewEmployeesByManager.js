@@ -7,14 +7,15 @@ const createQuestions = (data) => {
     if (cur && !acc.includes(cur)) return [...acc, cur];
     return [...acc];
   }, [])
+
   return [
-  {
-    type: 'list',
-    name: 'managerName',
-    message: 'Which manager would you to view?',
-    choices
-  }
-];
+    {
+      type: 'list',
+      name: 'managerName',
+      message: 'Which manager would you to view?',
+      choices
+    }
+  ];
 }
 
 // handle answer
