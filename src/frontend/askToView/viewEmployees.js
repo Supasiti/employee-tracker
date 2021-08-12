@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const displayAll = require('../displayAll');
 const viewEmployeesByManager = require('./viewEmployeesByManager');
+const viewEmployeesByDepartment = require('./viewEmployeesByDepartment');
 
 const questions = [
   {
@@ -17,7 +18,7 @@ const handleAnswer = (answer) => {
   const { filteredBy } = answer;
   if (filteredBy === 'None')       return displayAll('employees');
   if (filteredBy === 'Manager')    return viewEmployeesByManager.start()
-  // if (filteredBy === 'Department') return 
+  if (filteredBy === 'Department') return viewEmployeesByDepartment.start()
 };
 
 // to start mini series of questions

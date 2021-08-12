@@ -15,7 +15,6 @@ const createQuestions = (data) => {
 
 // get manager id from the list
 const getManagerIdByName = (name, data) => {
-  console.log(name);
   if (name === 'None') return 'null';
   const { id } = data.managers.find((manager) => manager.name === name);
   return id;
@@ -24,7 +23,6 @@ const getManagerIdByName = (name, data) => {
 // handle answer
 const handleAnswer = (answer, data) => {
   const filterValue = getManagerIdByName(answer.managerName, data);
-  console.log(filterValue);
   const filterObj = {
     where : {
       managerId : filterValue
