@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const add = require('../services/addEntity');
+const add = require('../../services/addEntity');
 
 const questions = [
   {

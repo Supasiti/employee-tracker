@@ -9,12 +9,13 @@ const queries = {
   employees: findAllEmployees
 }
 
-const findAll = (entity) => {
+const findAll = (entity, filter) => {
   if (entity in queries) {
-    return queries[entity]()
+    return queries[entity](filter)
       .then( ([results]) =>  results.map((textRow) => parseTextRow(textRow)));
   }
   throw new Error(`Entity (${entity}) does not exist in this database`);
 }
+
 
 module.exports = findAll;

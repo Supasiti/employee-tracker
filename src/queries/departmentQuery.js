@@ -1,23 +1,18 @@
-const sql = require('../configs/mysqlConnection');
+const query = require('./baseQuery');
 
 // find all return all departments in the db
 const findAll = () => {
-  return sql.promise()
-    .query('SELECT * FROM `department`')
-    .catch(console.error)
+  return query('SELECT * FROM `department`')
 }
 
 // add a department name to the db
 const add = (department) => {
   const { name } = department;
-  return sql.promise()
-    .query(`
+  return query(`
       INSERT INTO department (name)
       VALUES (?)`, name)
-    .catch(console.error)
 }
   
-
 module.exports = {
   findAll,
   add
