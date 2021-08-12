@@ -25,7 +25,10 @@ const handleAnswer = (answer) => {
   if (purpose === 'View All') return askToView.start().then(() => start());
   if (purpose === 'Add') return askToAdd.start().then(() => start());
   if (purpose === 'Update Employee\'s Role')  return askToUpdateEmployeeRole.start().then(() => start())
-  if (purpose === 'Quit') return process.exit();
+  if (purpose === 'Quit') {
+    console.log('Goodbye!');
+    process.exit();
+  }
 };
 
 //  to start the CLI

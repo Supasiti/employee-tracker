@@ -16,7 +16,7 @@ A command-line application that allows user to a company's employee database, us
 
 The followign video shows how the application can be used from the command line:
 
-[![walkthough](./demo/screenshot.png)]()
+[![walkthough](./demo/screenshot.png)](https://youtu.be/uY79_zfU7qw)
 
 ## <h2 id="table-of-contents"> Table of Contents </h2>
 
